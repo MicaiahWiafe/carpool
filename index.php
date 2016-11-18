@@ -28,7 +28,7 @@
       
         session_start();
         $_SESSION['userid']=$row['userid'];
-        header("location: page1.html");
+        header("location: main.html");
         
       }
     }
@@ -48,14 +48,14 @@
 
 
       //if the passwords are the same, check if user already exists in database
-      if($pass==$repass){
+      if($pass==$repass && $pass!=""){
 
         //check database for new username being added
         $str_query="select username from user WHERE username='$name' and password='$pass' ";
         $result=$db->query($str_query);
 
         if(!$result){
-          echo "error authenticating";
+          echo "<script type='text/javascript'>alert('error authenticating');</script>";
           exit();
         }
         $row=$result->fetch_assoc();
@@ -74,14 +74,17 @@
             else{
               session_start();
               $_SESSION['username']=$name;
-              header("location: page1.html");
+              header("location: main.html");
             }
         }
         
       }
       //alert user about password mismatch
-      else{
+      else if($pass!=$repass){
         echo "<script type='text/javascript'>alert('Mismatching passwords');</script>";
+      }
+      else{
+        echo "<script type='text/javascript'>alert('Invalid login details');</script>";
       }
     }
 ?>
@@ -162,8 +165,8 @@
       </div>
 
       <div class="input">
-         <label for="number">Phone</label>
-         <input type="text" name="number" id="number">
+         <label for="phone">Phone</label>
+         <input type="text" name="phone" id="phone">
          <span class="spin"></span>
       </div>
 
